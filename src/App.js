@@ -1,35 +1,74 @@
 import React, { Component } from 'react';
-import FirebaseApp from 'firebase/app';
-import 'firebase/database';
-import './App.css';
+import Board from './Board';
+// import { database } from './firebase.js';
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyDk_cdPFQ84EVKnYNZvTjoGSUaiyxrpjX8',
-  authDomain: 'codewords-4ec79.firebaseapp.com',
-  databaseURL: 'https://codewords-4ec79.firebaseio.com',
-  projectId: 'codewords-4ec79',
-  storageBucket: 'codewords-4ec79.appspot.com',
-  messagingSenderId: '380474510016'
-};
-FirebaseApp.initializeApp(firebaseConfig);
+// const textValue = database.ref('/text');
 
-const database = FirebaseApp.database();
-const textValue = database.ref('/text');
+const createCard = (word = '', type = 'neutral', revealed = false) => ({
+  word,
+  type,
+  revealed
+});
+
+const createWithWords = words =>
+  Array(25)
+    .fill(null)
+    .map((el, index) => ({
+      id: index,
+      ...createCard(words[index])
+    }));
+
+const toggleCard = (board, id) =>
+  board.map(card => {
+    if (card.id === id) {
+      return {
+        ...card,
+        revealed: !card.revealed
+      };
+    } else {
+      return card;
+    }
+  });
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      text: 'Hello friend'
+      text: 'Hello friend',
+      board: createWithWords(['hello', 'there', 'friend'])
     };
 
-    textValue.on('value', newVal => this.setState({ text: newVal.val() }));
+    // textValue.on('value', newVal => this.setState({ text: newVal.val() }));
+  }
+
+  reduce({ type, payload }) {
+    const { state } = this;
+    let newState = state;
+
+    switch (type) {
+      case 'toggleCard':
+        newState = {
+          ...state,
+          board: toggleCard(state.board, payload)
+        };
+        break;
+
+      default:
+        break;
+    }
+
+    this.setState(newState);
   }
 
   render() {
     return (
       <div className="App">
-        <h1>{this.state.text}</h1>
+        <Board
+          cards={this.state.board}
+          toggleCardRevealed={id =>
+            this.reduce({ type: 'toggleCard', payload: id })
+          }
+        />
       </div>
     );
   }

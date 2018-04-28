@@ -1,5 +1,199 @@
-body {
-  margin: 0;
+body,
+html {
+  width: 100%;
+  height: 100%;
   padding: 0;
+  margin: 0;
+}
+
+body {
   font-family: sans-serif;
+}
+
+body * {
+  box-sizing: border-box;
+}
+
+#root,
+.App {
+  height: 100%;
+}
+
+.board-view {
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-gap: 10px;
+  height: 100%;
+  margin: auto;
+  max-width: 1200px;
+}
+
+.card {
+  position: relative;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  background: #fdf2dd;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.1s ease-in-out;
+}
+
+.card.edit {
+  padding: 10px;
+  border-width: 3px;
+}
+
+.card.edit form {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.card input,
+.card select,
+.card button.save {
+  background: white;
+  padding: 8px;
+  margin: 3px 0;
+  width: 100%;
+  height: 30px;
+  font-size: 1em;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.card button.save {
+  padding: 0;
+  background: #00d688;
+  color: white;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+  font-weight: bold;
+  border-color: #aaa;
+}
+
+.card button.save:hover {
+  cursor: pointer;
+}
+
+.card button.edit {
+  display: none;
+  position: absolute;
+  padding: 5px 8px;
+  top: 3px;
+  right: 3px;
+  background: none;
+  border: none;
+  border-radius: 3px;
+  text-transform: uppercase;
+  transition: all 0.1s ease-in-out;
+}
+
+.card button.edit:hover {
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Display when hovering on card */
+.card:hover button.edit {
+  display: block;
+}
+
+.card.empty {
+  color: #ddd;
+  font-size: 2.5vmin;
+  background: none;
+  border: 2px dashed currentColor;
+  box-shadow: none;
+}
+
+.card.empty::after {
+  color: #ddd;
+  font-size: 2em;
+  font-weight: bold;
+  content: '+';
+  transition: all 0.1s ease-in-out;
+}
+
+.card.empty:hover {
+  color: #999;
+  transform: none;
+  box-shadow: none;
+}
+
+.card.empty:hover::after {
+  color: #999;
+}
+
+.card span {
+  background: rgba(0, 0, 0, 0.05);
+  width: 100%;
+  text-align: center;
+  font-size: 3vmin;
+  font-weight: bold;
+  padding: 2vmin;
+}
+
+.card.blue,
+.card.red,
+.card.assassin,
+.card.card.neutral,
+.card.blue button.edit,
+.card.red button.edit,
+.card.assassin button.edit,
+.card.card.neutral button.edit {
+  color: white;
+}
+
+.card.blue {
+  background: #4444f6;
+}
+
+.card.red {
+  background: #ff3131;
+}
+
+.card.neutral {
+  background: #d39361;
+}
+
+.card.assassin {
+  background: #444;
+}
+
+.card.edit.blue {
+  background: #fdf2dd;
+  border-color: #4444f6;
+}
+
+.card.edit.red {
+  background: #fdf2dd;
+  border-color: #ff3131;
+}
+
+.card.edit.neutral {
+  background: #fdf2dd;
+  border-color: #d39361;
+}
+
+.card.edit.assassin {
+  background: #fdf2dd;
+  border-color: #444;
+}
+
+.card.hidden {
+  background: #fdf2dd;
+  color: black !important;
+}
+
+.card:hover {
+  cursor: pointer;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
 }
